@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Planos Profesional con Trazado Inteligente</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+    <div class="main-container">
+        <!-- TOOLBAR PRINCIPAL -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <div class="app-title">📐 TRUJILLO</div>
+                
+                <button class="upload-btn" onclick="document.getElementById('pdfFiles').click()">
+                    📄 Cargar PDF/Imagen
+                </button>
+                <input type="file" id="pdfFiles" class="file-input" accept=".pdf,.jpg,.png,.svg">
+                
+                <button class="add-plan-btn" onclick="addNewPlan()">
+                    ➕ Nuevo Plano
+                </button>
+            </div>
+
+            <div class="toolbar-center">
+                <div class="format-selector">
+                    <button class="format-btn active" onclick="changeFormat('A1')" id="btnA1">A1</button>
+                    <button class="format-btn" onclick="changeFormat('A0')" id="btnA0">A0</button>
+                </div>
+                <div class="plan-info" id="planInfo">
+                    A1 (1000 × 700) | Archivos: 0
+                </div>
+            </div>
+
+            <div class="toolbar-right">
+                <button class="action-btn download-btn" onclick="downloadPDF()" id="downloadBtn">
+                    📥 Descargar PDF
+                </button>
+                <button class="action-btn email-btn" onclick="showEmailModal()" id="emailBtn">
+                    📧 Enviar Email
+                </button>
+            </div>
+        </div>
+
+        <!-- PANEL DE TRAZADO INTELIGENTE -->
+        <div class="tracing-panel">
+            <div class="panel-group">
+                <span>Modo:</span>
+                <button class="mode-btn" id="modeToggle" onclick="toggleMode()">🖱️ Edición</button>
+            </div>
+            
+            <div class="panel-group">
+                <span>Escala:</span>
+                <button class="scale-btn active" onclick="selectScale('1:50')" data-scale="50">1:50</button>
+                <button class="scale-btn" onclick="selectScale('1:75')" data-scale="75">1:75</button>
+                <button class="scale-btn" onclick="selectScale('1:100')" data-scale="100">1:100</button>
+                <button class="scale-btn" onclick="selectScale('1:125')" data-scale="125">1:125</button>
+                <button class="scale-btn" onclick="selectScale('1:150')" data-scale="150">1:150</button>
+                <button class="scale-btn" onclick="selectScale('1:200')" data-scale="200">1:200</button>
+            </div>
+
+            <div class="panel-group">
+                <span>Sanitarios:</span>
+                <button class="tool-btn" onclick="selectTool('wc')">🚽 WC</button>
+                <button class="tool-btn" onclick="selectTool('lavatorio')">🚰 Lavatorio</button>
+                <button class="tool-btn" onclick="selectTool('bano-tina')">🛁 Baño Tina</button>
+                <button class="tool-btn" onclick="selectTool('ducha')">🚿 Ducha</button>
+                <button class="tool-btn" onclick="selectTool('bidet')">🪑 Bidet</button>
+                <button class="tool-btn" onclick="selectTool('urinario')">🚹 Urinario</button>
+            </div>
+
+            <div class="panel-group">
+                <span>Cocina/Lavado:</span>
+                <button class="tool-btn" onclick="selectTool('lavaplatos')">🍽️ Lavaplatos</button>
+                <button class="tool-btn" onclick="selectTool('lavacopas')">🍷 Lavacopas</button>
+                <button class="tool-btn" onclick="selectTool('lavadora')">🧺 Lavadora</button>
+                <button class="tool-btn" onclick="selectTool('lavadero')">🧽 Lavadero</button>
+            </div>
+
+            <div class="panel-group">
+                <span>Infraestructura:</span>
+                <button class="tool-btn" onclick="selectTool('camara-inspeccion')">⚫ Cámara Inspección</button>
+                <button class="tool-btn" onclick="selectTool('camara-publica')">🔴 Cámara Pública</button>
+                <button class="tool-btn" onclick="selectTool('caja-registro')">▣ Caja Registro</button>
+                <button class="tool-btn" onclick="selectTool('punto-descarga')">💧 Punto Descarga</button>
+            </div>
+
+            <div class="panel-group">
+                <span>Anotaciones:</span>
+                <button class="tool-btn" onclick="selectTool('texto')">📝 Texto</button>
+                <button class="tool-btn" onclick="selectTool('rosa-norte')">🧭 Rosa Norte</button>
+            </div>
+
+            <div class="panel-group">
+                <span>Acciones:</span>
+                <button class="tool-btn" onclick="generateTracing()" style="background: #27ae60;">⚡ Generar Trazado</button>
+                <button class="tool-btn" onclick="generateIsometric()" style="background: #9b59b6;">🎯 Generar Isométrico</button>
+                <button class="tool-btn" onclick="clearTracing()" style="background: #e74c3c;">🗑️ Limpiar Trazado</button>
+            </div>
+        </div>
+
+        <!-- WORKSPACE CONTAINER -->
+        <div class="workspace-container">
+            <!-- WORKSPACE PRINCIPAL -->
+            <div class="workspace" id="workspace">
+                <div class="zoom-container" id="zoomContainer">
+                    <!-- Plan Title Outside -->
+                    <div class="plan-title-external">
+                        <h2 id="planTitle">PLANO PROFESIONAL - A1</h2>
+                    </div>
+                    
+                    <div class="drawing-board format-a1" id="drawingBoard">
+                        <!-- SVG Layer para archivos SVG -->
+                        <div class="svg-layer" id="svgLayer"></div>
+                        
+                        <!-- 🔧 CORRECCIÓN CRÍTICA: SVG con viewBox correcto para A1 -->
+                        <svg class="tracing-svg" id="tracingSvg" viewBox="0 0 594 841">
+                            <defs>
+                                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e0e0e0" stroke-width="0.5"/>
+                                </pattern>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL DE PLANOS (DERECHA) -->
+            <div class="plans-panel">
+                <div class="plans-header">
+                    📋 Gestión de Planos
+                </div>
+                <div class="plans-counter" id="plansCounter">
+                    Planos generados: 1
+                </div>
+                <div class="plans-list" id="plansList">
+                    <div class="plan-item active" onclick="switchToPlan(0)">
+                        <div class="plan-item-title">📄 Plano Principal</div>
+                        <div class="plan-item-info">A1 • Activo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div class="status-bar" id="statusBar"></div>
+
+    <!-- EMAIL MODAL -->
+    <div class="email-modal" id="emailModal">
+        <div class="email-content">
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">📧 Enviar Plano por Email</h3>
+            <input type="email" class="email-input" id="emailInput" placeholder="Email de destino">
+            <input type="text" class="email-input" id="subjectInput" placeholder="Asunto" value="Plano Profesional">
+            <div class="email-buttons">
+                <button class="email-send" onclick="sendEmail()">Enviar</button>
+                <button class="email-cancel" onclick="hideEmailModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEXT MODAL -->
+    <div class="email-modal" id="textModal">
+        <div class="email-content">
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">📝 Configurar Texto</h3>
+            <input type="text" class="email-input" id="textContent" placeholder="Texto a insertar" value="TEXTO">
+            <select class="email-input" id="textFont">
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Calibri">Calibri</option>
+            </select>
+            <select class="email-input" id="textSize">
+                <option value="8">8px</option>
+                <option value="10">10px</option>
+                <option value="12" selected>12px</option>
+                <option value="14">14px</option>
+                <option value="16">16px</option>
+                <option value="18">18px</option>
+                <option value="24">24px</option>
+                <option value="36">36px</option>
+            </select>
+            <div class="email-buttons">
+                <button class="email-send" onclick="createTextElement()">Crear</button>
+                <button class="email-cancel" onclick="hideTextModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="tracing.js"></script>
+    <script src="editor.js"></script>
+    <script src="intelligent-tracing.js"></script>
+    <script src="motor-isometric.js"></script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto de Instalación de Alcantarillado Domiciliario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid black;
+            margin-bottom: 20px;
+        }
+        
+        .form-table td, .form-table th {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        .no-right-border {
+            border-right: none !important;
+        }
+        
+        .no-left-border {
+            border-left: none !important;
+        }
+        
+        .header {
+            background-color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 28px;
+            padding: 8px;
+            line-height: 1.2;
+        }
+        
+        .section-header {
+            background-color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .field-label {
+            font-weight: bold;
+            white-space: nowrap;
+            width: 150px;
+        }
+        
+        .field-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            padding: 2px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .small-field {
+            width: 60px;
+        }
+        
+        .ubicacion-cell {
+            height: 200px;
+            vertical-align: top;
+            padding: 10px;
+            position: relative;
+        }
+        
+        .ubicacion-content {
+            display: flex;
+            height: 100%;
+        }
+        
+        .ubicacion-left {
+            width: 25%;
+            padding-right: 5px;
+            border-right: 2px solid black;
+        }
+        
+        .ubicacion-right {
+            width: 75%;
+            padding-left: 5px;
+        }
+        
+        .ubicacion-textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            resize: none;
+            font-size: 14px;
+        }
+        
+        .multiline-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            padding: 2px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            min-height: 20px;
+        }
+        
+        .print-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        
+        .print-button:hover {
+            background-color: #45a049;
+        }
+        
+        .clear-button {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        
+        .clear-button:hover {
+            background-color: #da190b;
+        }
+        
+        @media print {
+            body {
+                margin: 0;
+                background-color: white;
+            }
+            .container {
+                box-shadow: none;
+                max-width: none;
+            }
+            .print-button, .clear-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table class="form-table">
+            <tr>
+                <td colspan="4" class="header">PROYECTO DE INSTALACION DE ALCANTARILLADO DOMICILIARIO</td>
+            </tr>
+            <tr>
+                <td class="field-label">PROYECTO</td>
+                <td colspan="2" style="border-right: 2px solid black;">
+                    <input type="text" class="field-input" id="proyecto" placeholder="Ingrese nombre del proyecto">
+                </td>
+                <td class="field-label">LAMINA</td>
+            </tr>
+            <tr>
+                <td class="field-label">N°</td>
+                <td class="field-label">FECHA</td>
+                <td style="border-right: 2px solid black;">
+                    <input type="text" class="field-input" id="proyecto_fecha" placeholder="Ingrese fecha">
+                </td>
+                <td>
+                    <span class="field-label">N</span>
+                    <input type="text" class="field-input small-field" id="lamina_n" value="4">
+                    <span class="field-label">DE</span>
+                    <input type="text" class="field-input small-field" id="lamina_de">
+                </td>
+            </tr>
+            <tr>
+                <td class="field-label">AVISO DE INICIO</td>
+                <td class="field-label">N°</td>
+                <td style="border-right: 2px solid black;">
+                    <input type="text" class="field-input" id="aviso_numero" placeholder="Ingrese número">
+                </td>
+                <td class="field-label">FECHA</td>
+            </tr>
+            <tr>
+                <td class="field-label">CERTIFICADO DEFACTIBILIDAD</td>
+                <td>
+                    <span class="field-label">N°</span>
+                    <input type="text" class="field-input" id="cert_defact" value="2018100377S">
+                </td>
+                <td>
+                    <span class="field-label">FECHA</span>
+                    <input type="text" class="field-input" id="cert_fecha" value="------">
+                    <br>
+                    <span class="field-label">FECHA</span>
+                    <input type="text" class="field-input" id="cert_fecha_derecha" placeholder="Ingrese fecha">
+                </td>
+                <td class="field-label">FECHA</td>
+            </tr>
+        </table>
+
+        <table class="form-table">
+            <tr>
+                <td class="field-label no-right-border">CALLE</td>
+                <td class="no-left-border">: <textarea class="multiline-input" id="calle" placeholder="Ingrese calle"></textarea></td>
+            </tr>
+            <tr>
+                <td class="field-label no-right-border">N° MUNICIPAL</td>
+                <td class="no-left-border">: <textarea class="multiline-input" id="num_municipal" placeholder="Ingrese número municipal"></textarea></td>
+            </tr>
+            <tr>
+                <td class="field-label no-right-border">POBLACION</td>
+                <td class="no-left-border">: <textarea class="multiline-input" id="poblacion" placeholder="Ingrese población"></textarea></td>
+            </tr>
+            <tr>
+                <td class="field-label no-right-border">COMUNA</td>
+                <td class="no-left-border">: <textarea class="multiline-input" id="comuna" placeholder="Ingrese comuna"></textarea></td>
+            </tr>
+        </table>
+
+        <table class="form-table">
+            <tr>
+                <td class="section-header ubicacion-cell">
+                    <div class="ubicacion-content">
+                        <div class="ubicacion-left">
+                            <div style="font-weight: bold; margin-bottom: 10px;">UBICACION</div>
+                            <textarea class="ubicacion-textarea" id="ubicacion" placeholder="Descripción de la ubicación del proyecto..."></textarea>
+                        </div>
+                        <div class="ubicacion-right">
+                            <textarea class="ubicacion-textarea" id="ubicacion_derecha" placeholder="Información adicional..."></textarea>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <table class="form-table">
+            <tr>
+                <td colspan="2" class="section-header">FIRMAS</td>
+            </tr>
+            <tr>
+                <td style="width: 50%;">
+                    <div class="section-header">PROYECTISTA</div>
+                    <br>
+                    <div class="field-label">Nombre : <input type="text" class="field-input" id="proy_nombre"></div>
+                    <br>
+                    <div class="field-label">Profesion : <input type="text" class="field-input" id="proy_profesion"></div>
+                    <br>
+                    <div class="field-label">Domicilio : <input type="text" class="field-input" id="proy_domicilio"></div>
+                </td>
+                <td style="width: 50%;">
+                    <div class="section-header">PROPIETARIO</div>
+                    <br>
+                    <div class="field-label">Nombre : <input type="text" class="field-input" id="prop_nombre"></div>
+                    <br>
+                    <div class="field-label">RUT : <input type="text" class="field-input" id="prop_rut"></div>
+                    <br>
+                    <div class="field-label">Domicilio : <input type="text" class="field-input" id="prop_domicilio"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="section-header">CONTRATISTA</div>
+                    <br>
+                    <div class="field-label">Nombre : <input type="text" class="field-input" id="cont_nombre"></div>
+                    <br>
+                    <div class="field-label">Profesion : <input type="text" class="field-input" id="cont_profesion"></div>
+                    <br>
+                    <div class="field-label">Domicilio : <input type="text" class="field-input" id="cont_domicilio"></div>
+                </td>
+                <td>
+                    <div class="section-header">PROYECTO DEFINITIVO</div>
+                    <div class="section-header">CERTIFICADO DE RECEPCION</div>
+                    <br>
+                    <div class="field-label">N° : <input type="text" class="field-input" id="cert_recep_num" style="width: 100px; display: inline-block;"></div>
+                    <div class="field-label">FECHA : <input type="text" class="field-input" id="cert_recep_fecha" style="width: 150px; display: inline-block;"></div>
+                </td>
+            </tr>
+        </table>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="print-button" onclick="window.print()">Imprimir</button>
+            <button class="clear-button" onclick="limpiarFormulario()">Limpiar Formulario</button>
+            <button class="print-button" onclick="guardarDatos()">Guardar Datos</button>
+            <button class="print-button" onclick="cargarDatos()">Cargar Datos</button>
+        </div>
+    </div>
+
+    <script>
+        let datosTemporales = {};
+
+        // Función para limpiar el formulario
+        function limpiarFormulario() {
+            if (confirm('¿Está seguro de que desea limpiar todos los campos?')) {
+                const inputs = document.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    if (input.id !== 'lamina_n' && input.id !== 'cert_defact' && input.id !== 'cert_fecha') {
+                        input.value = '';
+                    }
+                });
+                datosTemporales = {};
+            }
+        }
+
+        // Función para guardar datos en memoria
+        function guardarDatos() {
+            const datos = {};
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                if (input.id) {
+                    datos[input.id] = input.value;
+                }
+            });
+            
+            const datosJson = JSON.stringify(datos, null, 2);
+            const blob = new Blob([datosJson], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'proyecto_alcantarillado.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('Datos guardados exitosamente');
+        }
+
+        // Función para cargar datos
+        function cargarDatos() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const datos = JSON.parse(e.target.result);
+                            for (const [id, valor] of Object.entries(datos)) {
+                                const elemento = document.getElementById(id);
+                                if (elemento) {
+                                    elemento.value = valor;
+                                }
+                            }
+                            alert('Datos cargados exitosamente');
+                        } catch (error) {
+                            alert('Error al cargar el archivo');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+            input.click();
+        }
+
+        // Auto-guardar en memoria temporal mientras se escribe
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                if (input.id) {
+                    // Cargar valor guardado si existe
+                    const savedValue = datosTemporales[input.id];
+                    if (savedValue !== undefined && input.id !== 'lamina_n' && input.id !== 'cert_defact' && input.id !== 'cert_fecha') {
+                        input.value = savedValue;
+                    }
+                    
+                    // Guardar automáticamente cuando se modifica
+                    input.addEventListener('input', function() {
+                        datosTemporales[input.id] = input.value;
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

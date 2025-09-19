@@ -1,0 +1,1320 @@
+/* ================================
+   RESET Y CONFIGURACIÓN GLOBAL
+   ================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    overflow: hidden;
+    height: 100vh;
+    color: #e5e5e5;
+}
+
+/* ================================
+   CONTENEDOR PRINCIPAL
+   ================================ */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0a0a0a 100%);
+}
+
+/* ================================
+   BARRA DE HERRAMIENTAS TECNOLÓGICA
+   ================================ */
+.toolbar {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+    border-bottom: 2px solid #00d4ff;
+    color: #ffffff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 
+        0 4px 20px rgba(0, 212, 255, 0.1),
+        0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+
+.toolbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(0, 212, 255, 0.05) 20%, 
+        rgba(0, 255, 136, 0.05) 50%, 
+        rgba(99, 102, 241, 0.05) 80%, 
+        transparent 100%);
+    pointer-events: none;
+}
+
+.toolbar-left,
+.toolbar-center,
+.toolbar-right {
+    position: relative;
+    z-index: 1;
+}
+
+.toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.toolbar-center {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.app-title {
+    font-size: 1.6em;
+    font-weight: 700;
+    background: linear-gradient(45deg, #00d4ff, #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    letter-spacing: 1px;
+}
+
+/* ================================
+   BOTONES TECNOLÓGICOS MEJORADOS
+   ================================ */
+.upload-btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    color: #000000;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9em;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 15px rgba(0, 212, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.upload-btn:hover {
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 25px rgba(0, 255, 136, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.add-plan-btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9em;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 15px rgba(99, 102, 241, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.add-plan-btn:hover {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 25px rgba(139, 92, 246, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.format-selector {
+    display: flex;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.format-btn {
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    color: #b0b0b0;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9em;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.format-btn.active {
+    background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    color: #000000;
+    border-color: #00d4ff;
+    box-shadow: 
+        0 0 20px rgba(0, 212, 255, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.format-btn:hover {
+    background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    color: #000000;
+    border-color: #00d4ff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+}
+
+.action-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.download-btn {
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+    color: #000000;
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+}
+
+.download-btn:hover {
+    background: linear-gradient(135deg, #00ff88 0%, #00e673 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
+}
+
+.email-btn {
+    background: linear-gradient(135deg, #ff4444 0%, #cc3333 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+}
+
+.email-btn:hover {
+    background: linear-gradient(135deg, #ff6666 0%, #ff4444 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 68, 68, 0.5);
+}
+
+.action-btn:disabled {
+    background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
+    color: #666666;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none;
+}
+
+.file-input {
+    display: none;
+}
+
+.plan-info {
+    color: #b0b0b0;
+    font-size: 0.9em;
+    font-weight: 500;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+/* ================================
+   PANEL DE TRAZADO TECNOLÓGICO
+   ================================ */
+.tracing-panel {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+    border-bottom: 2px solid #00ff88;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    box-shadow: 
+        0 4px 20px rgba(0, 255, 136, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.panel-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.panel-group span {
+    color: #00d4ff;
+    font-weight: 700;
+    font-size: 0.9em;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tool-btn {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    color: #e5e5e5;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8em;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tool-btn:hover {
+    background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    color: #000000;
+    border-color: #00d4ff;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 20px rgba(0, 212, 255, 0.4),
+        0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+.tool-btn.active {
+    background: linear-gradient(135deg, #ff4444 0%, #cc3333 100%);
+    color: #ffffff;
+    border-color: #ff4444;
+    box-shadow: 
+        0 0 20px rgba(255, 68, 68, 0.5),
+        0 4px 15px rgba(255, 68, 68, 0.3);
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { 
+        box-shadow: 
+            0 0 20px rgba(255, 68, 68, 0.5),
+            0 4px 15px rgba(255, 68, 68, 0.3);
+    }
+    50% { 
+        box-shadow: 
+            0 0 30px rgba(255, 68, 68, 0.8),
+            0 6px 25px rgba(255, 68, 68, 0.5);
+    }
+}
+
+.scale-btn {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
+    color: #b0b0b0;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.75em;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.scale-btn:hover {
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+    color: #000000;
+    border-color: #00ff88;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+}
+
+.scale-btn.active {
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+    color: #000000;
+    border-color: #00ff88;
+    box-shadow: 
+        0 0 15px rgba(0, 255, 136, 0.5),
+        0 2px 10px rgba(0, 255, 136, 0.3);
+}
+
+.mode-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9em;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.mode-btn:hover {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.mode-btn.navigation {
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+    color: #000000;
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+}
+
+/* ================================
+   CONTENEDOR DE WORKSPACE
+   ================================ */
+.workspace-container {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+}
+
+/* ================================
+   ÁREA DE TRABAJO PRINCIPAL
+   ================================ */
+.workspace {
+    flex: 1;
+    background: linear-gradient(135deg, #151515 0%, #252525 50%, #151515 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 20px;
+    position: relative;
+}
+
+.workspace::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 25% 25%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(0, 255, 136, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.zoom-container {
+    transform-origin: center center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+}
+
+.plan-title-external {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.plan-title-external h2 {
+    color: #ffffff;
+    font-size: 1.6em;
+    font-weight: 700;
+    margin: 0;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border-radius: 12px;
+    border: 2px solid #00d4ff;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 212, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    backdrop-filter: blur(10px);
+}
+
+.drawing-board {
+    background: #ffffff;
+    border: 4px solid #00d4ff;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(0, 212, 255, 0.3),
+        inset 0 0 0 2px rgba(0, 212, 255, 0.1);
+    position: relative;
+    background-image: 
+        linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: crosshair;
+    border-radius: 4px;
+}
+
+.drawing-board.navigation-mode {
+    cursor: grab;
+    border-color: #00ff88;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(0, 255, 136, 0.3);
+}
+
+.drawing-board.navigation-mode:active {
+    cursor: grabbing;
+}
+
+/* ================================
+   TAMAÑOS DEL PLANO
+   ================================ */
+.format-a1 {
+    width: 900px;
+    height: 630px;
+}
+
+.format-a0 {
+    width: 1300px;
+    height: 920px;
+}
+
+/* ================================
+   PANEL DE PLANOS TECNOLÓGICO
+   ================================ */
+.plans-panel {
+    width: 280px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+    border-left: 3px solid #00d4ff;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-shadow: 
+        -4px 0 20px rgba(0, 0, 0, 0.5),
+        inset 3px 0 0 rgba(0, 212, 255, 0.3);
+}
+
+.plans-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #ffffff;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1em;
+    border-bottom: 2px solid #00d4ff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.plans-counter {
+    background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+    color: #ffffff;
+    padding: 12px;
+    margin: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(99, 102, 241, 0.5);
+    box-shadow: 
+        0 4px 15px rgba(99, 102, 241, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.plans-list {
+    flex: 1;
+    padding: 15px;
+}
+
+.plan-item {
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    color: #e5e5e5;
+    padding: 15px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: 2px solid rgba(0, 212, 255, 0.2);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.plan-item:hover {
+    border-color: #00d4ff;
+    background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 25px rgba(0, 212, 255, 0.4),
+        0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+.plan-item.active {
+    border-color: #00ff88;
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+    color: #000000;
+    box-shadow: 
+        0 8px 25px rgba(0, 255, 136, 0.4),
+        0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.plan-item-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.plan-item-info {
+    font-size: 0.8em;
+    opacity: 0.8;
+    font-weight: 500;
+}
+
+/* ================================
+   ELEMENTOS DEL PLANO
+   ================================ */
+.drawing-board::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    pointer-events: none;
+    border-radius: 2px;
+}
+
+/* ================================
+   ELEMENTOS DINÁMICOS
+   ================================ */
+.dynamic-text {
+    cursor: move;
+    transition: all 0.3s ease;
+}
+
+.dynamic-text:hover {
+    filter: drop-shadow(0 2px 6px rgba(0, 212, 255, 0.3));
+}
+
+.dynamic-rose {
+    cursor: move;
+    transition: all 0.3s ease;
+}
+
+.dynamic-rose:hover {
+    filter: drop-shadow(0 2px 6px rgba(0, 212, 255, 0.3));
+}
+
+/* ================================
+   SVG Y ELEMENTOS DE TRAZADO
+   ================================ */
+.svg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.tracing-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: all;
+}
+
+/* Estilos para elementos de trazado mejorados */
+.pipe-line {
+    stroke: #ff4444 !important;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 2px 4px rgba(255, 68, 68, 0.3));
+}
+
+.pipe-line:hover {
+    filter: drop-shadow(0 0 12px rgba(255, 68, 68, 0.8));
+    stroke-width: 4 !important;
+}
+
+.connection-point {
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.connection-point:hover {
+    filter: 
+        drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))
+        drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    transform: scale(1.1);
+}
+
+.connection-point.selected {
+    stroke: #00ff88 !important;
+    filter: 
+        drop-shadow(0 0 15px rgba(0, 255, 136, 0.9))
+        drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    animation: pulse-connection-tech 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-connection-tech {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.15);
+    }
+}
+
+/* Elementos específicos con colores tecnológicos */
+.element-wc circle { 
+    fill: #ff4444; 
+    filter: drop-shadow(0 2px 6px rgba(255, 68, 68, 0.4));
+}
+.element-lavatorio circle { 
+    fill: #00d4ff; 
+    filter: drop-shadow(0 2px 6px rgba(0, 212, 255, 0.4));
+}
+.element-bano-tina circle { 
+    fill: #6366f1; 
+    filter: drop-shadow(0 2px 6px rgba(99, 102, 241, 0.4));
+}
+.element-ducha circle { 
+    fill: #00ffff; 
+    filter: drop-shadow(0 2px 6px rgba(0, 255, 255, 0.4));
+}
+.element-bidet circle { 
+    fill: #ffaa00; 
+    filter: drop-shadow(0 2px 6px rgba(255, 170, 0, 0.4));
+}
+.element-urinario circle { 
+    fill: #00ff88; 
+    filter: drop-shadow(0 2px 6px rgba(0, 255, 136, 0.4));
+}
+.element-lavaplatos circle { 
+    fill: #ff8800; 
+    filter: drop-shadow(0 2px 6px rgba(255, 136, 0, 0.4));
+}
+.element-lavacopas circle { 
+    fill: #ff44ff; 
+    filter: drop-shadow(0 2px 6px rgba(255, 68, 255, 0.4));
+}
+.element-lavadora circle { 
+    fill: #8844ff; 
+    filter: drop-shadow(0 2px 6px rgba(136, 68, 255, 0.4));
+}
+.element-lavadero circle { 
+    fill: #88ff44; 
+    filter: drop-shadow(0 2px 6px rgba(136, 255, 68, 0.4));
+}
+.element-camara-inspeccion circle { 
+    fill: #1a1a1a; 
+    stroke: #00d4ff !important;
+    stroke-width: 2;
+    filter: drop-shadow(0 2px 6px rgba(0, 212, 255, 0.4));
+}
+.element-caja-registro circle { 
+    fill: #2a2a2a; 
+    stroke: #00ff88 !important;
+    stroke-width: 2;
+    filter: drop-shadow(0 2px 6px rgba(0, 255, 136, 0.4));
+}
+.element-punto-descarga circle { 
+    fill: #ffaa00; 
+    filter: drop-shadow(0 2px 6px rgba(255, 170, 0, 0.4));
+}
+.element-camara-publica circle { 
+    fill: #ff4444 !important; 
+    stroke: #ffaa00 !important;
+    stroke-width: 3;
+    filter: 
+        drop-shadow(0 0 12px rgba(255, 68, 68, 0.8))
+        drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+    0%, 100% { 
+        filter: 
+            drop-shadow(0 0 12px rgba(255, 68, 68, 0.8))
+            drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+    }
+    50% { 
+        filter: 
+            drop-shadow(0 0 20px rgba(255, 68, 68, 1))
+            drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
+    }
+}
+
+/* Elementos seleccionados mejorados */
+.selected {
+    filter: 
+        drop-shadow(0 0 15px rgba(0, 255, 136, 0.9))
+        drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4)) !important;
+}
+
+.selected circle {
+    stroke: #00ff88 !important;
+    stroke-width: 4 !important;
+    animation: pulse-selected-tech 2s ease-in-out infinite;
+}
+
+@keyframes pulse-selected-tech {
+    0%, 100% { 
+        opacity: 1; 
+        stroke-width: 4;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8; 
+        stroke-width: 6;
+        transform: scale(1.1);
+    }
+}
+
+/* ================================
+   BARRA DE ESTADO TECNOLÓGICA
+   ================================ */
+.status-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    color: #00d4ff;
+    padding: 12px 24px;
+    border-radius: 25px;
+    display: none;
+    z-index: 1000;
+    border: 2px solid #00d4ff;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 212, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* ================================
+   MODAL DE EMAIL TECNOLÓGICO
+   ================================ */
+.email-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+}
+
+.email-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    padding: 40px;
+    border-radius: 20px;
+    width: 450px;
+    border: 2px solid #00d4ff;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(0, 212, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.email-content h3 {
+    color: #00d4ff;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.email-input {
+    width: 100%;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 10px;
+    margin: 12px 0;
+    font-size: 1em;
+    color: #ffffff;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(5px);
+}
+
+.email-input:focus {
+    outline: none;
+    border-color: #00d4ff;
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+.email-input::placeholder {
+    color: #888888;
+}
+
+.email-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.email-send {
+    flex: 1;
+    padding: 15px;
+    background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+    color: #000000;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+}
+
+.email-send:hover {
+    background: linear-gradient(135deg, #00ff88 0%, #00e673 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.5);
+}
+
+.email-cancel {
+    flex: 1;
+    padding: 15px;
+    background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.email-cancel:hover {
+    background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* ================================
+   VENTANA ISOMÉTRICA TECNOLÓGICA
+   ================================ */
+.isometric-window {
+    position: fixed;
+    top: 100px;
+    right: 50px;
+    width: 900px;
+    height: 700px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border: 3px solid #00d4ff;
+    border-radius: 15px;
+    box-shadow: 
+        0 25px 80px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(0, 212, 255, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    resize: none;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+}
+
+.isometric-window.minimized {
+    height: 60px;
+    overflow: hidden;
+    border-color: #00ff88;
+}
+
+.isometric-header {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #00d4ff 100%);
+    color: #ffffff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: grab;
+    user-select: none;
+    border-radius: 12px 12px 0 0;
+    border-bottom: 2px solid #00d4ff;
+    flex-wrap: wrap;
+    gap: 15px;
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.isometric-header:active {
+    cursor: grabbing;
+}
+
+.isometric-title {
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.isometric-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.scale-controls,
+.text-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.isometric-controls .scale-btn,
+.text-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #ffffff;
+    background: rgba(0, 212, 255, 0.2);
+    min-width: 30px;
+    text-transform: uppercase;
+}
+
+.isometric-controls .scale-btn:hover,
+.text-btn:hover {
+    background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    color: #000000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+}
+
+.scale-display,
+.text-display {
+    font-size: 12px;
+    font-weight: 700;
+    color: #00d4ff;
+    min-width: 40px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.isometric-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #ffffff;
+    background: rgba(0, 212, 255, 0.2);
+    backdrop-filter: blur(5px);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.isometric-btn:hover {
+    background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+    color: #000000;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+}
+
+.isometric-btn.close {
+    background: linear-gradient(135deg, #ff4444 0%, #cc3333 100%);
+    border-color: #ff4444;
+}
+
+.isometric-btn.close:hover {
+    background: linear-gradient(135deg, #ff6666 0%, #ff4444 100%);
+    box-shadow: 0 6px 20px rgba(255, 68, 68, 0.4);
+}
+
+.isometric-btn.minimize {
+    background: linear-gradient(135deg, #ffaa00 0%, #cc8800 100%);
+    border-color: #ffaa00;
+}
+
+.isometric-btn.minimize:hover {
+    background: linear-gradient(135deg, #ffcc44 0%, #ffaa00 100%);
+    box-shadow: 0 6px 20px rgba(255, 170, 0, 0.4);
+}
+
+.isometric-content {
+    flex: 1;
+    padding: 20px;
+    overflow: auto;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 0 12px 12px;
+}
+
+.isometric-content svg {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background: #ffffff;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.isometric-resize-handle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(-45deg, 
+        transparent 30%, #00d4ff 30%, #00d4ff 35%, transparent 35%, 
+        transparent 45%, #00d4ff 45%, #00d4ff 50%, transparent 50%,
+        transparent 60%, #00d4ff 60%, #00d4ff 65%, transparent 65%,
+        transparent 75%, #00d4ff 75%, #00d4ff 80%, transparent 80%);
+    cursor: nw-resize;
+    border-radius: 0 0 12px 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.isometric-resize-handle:hover {
+    background: linear-gradient(-45deg, 
+        transparent 30%, #00ff88 30%, #00ff88 35%, transparent 35%, 
+        transparent 45%, #00ff88 45%, #00ff88 50%, transparent 50%,
+        transparent 60%, #00ff88 60%, #00ff88 65%, transparent 65%,
+        transparent 75%, #00ff88 75%, #00ff88 80%, transparent 80%);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+}
+
+/* ================================
+   SCROLLBAR TECNOLÓGICA
+   ================================ */
+.isometric-content::-webkit-scrollbar,
+.plans-panel::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+.isometric-content::-webkit-scrollbar-track,
+.plans-panel::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 6px;
+}
+
+.isometric-content::-webkit-scrollbar-thumb,
+.plans-panel::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #00d4ff, #0099cc);
+    border-radius: 6px;
+    border: 2px solid #1a1a1a;
+}
+
+.isometric-content::-webkit-scrollbar-thumb:hover,
+.plans-panel::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #00ff88, #00cc66);
+}
+
+/* ================================
+   RESPONSIVE TECNOLÓGICO
+   ================================ */
+@media (max-width: 1200px) {
+    .tracing-panel {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    .panel-group {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .plans-panel {
+        width: 250px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .isometric-window {
+        width: 90vw;
+        height: 70vh;
+        right: 5vw;
+        top: 10vh;
+    }
+    
+    .toolbar {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+    }
+    
+    .toolbar-left,
+    .toolbar-center,
+    .toolbar-right {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ================================
+   ANIMACIONES TECNOLÓGICAS
+   ================================ */
+@keyframes slideInTech {
+    from {
+        opacity: 0;
+        transform: translateX(100px) scale(0.9);
+        filter: blur(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0px);
+    }
+}
+
+@keyframes techGlow {
+    0%, 100% { 
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.8),
+            0 0 40px rgba(0, 212, 255, 0.3);
+    }
+    50% { 
+        box-shadow: 
+            0 25px 80px rgba(0, 0, 0, 0.9),
+            0 0 60px rgba(0, 212, 255, 0.5);
+    }
+}
+
+.isometric-window {
+    animation: slideInTech 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawing-board {
+    animation: techGlow 4s ease-in-out infinite;
+}
+
+/* ================================
+   ETIQUETAS MEJORADAS
+   ================================ */
+.draggable-label {
+    cursor: grab;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+}
+
+.draggable-label:hover {
+    opacity: 0.95;
+    filter: 
+        drop-shadow(0 4px 12px rgba(0, 212, 255, 0.3))
+        drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+    transform: scale(1.02);
+}
+
+.draggable-label:active {
+    cursor: grabbing;
+    opacity: 0.9;
+}
+
+.draggable-label rect {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    stroke-width: 1.5;
+}
+
+.draggable-label:hover rect {
+    stroke: #00d4ff;
+    stroke-width: 2.5;
+    fill: rgba(255, 255, 255, 0.98);
+    filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.3));
+}
+
+.pipe-guide-line,
+.fixture-guide-line {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.pipe-guide-line:hover,
+.fixture-guide-line:hover {
+    stroke: #00d4ff !important;
+    stroke-width: 2.5 !important;
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.4));
+}
