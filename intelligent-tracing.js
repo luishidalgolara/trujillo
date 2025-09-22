@@ -1,7 +1,7 @@
 // ============================================
 // SISTEMA INTELIGENTE DE TRAZADO JERÁRQUICO
 // Cumple normativa RIDAA - Conexiones por diámetro
-// VERSIÓN PROFESIONAL - CORREGIDO A MILÍMETROS
+// VERSIÓN PROFESIONAL
 // ============================================
 
 // ================================
@@ -25,11 +25,11 @@ const RIDAA_CONFIG = {
         PROHIBIDO_COLECTOR: 90
     },
     
-    // CORREGIDO: Distancias de agrupación en milímetros
+    // Distancias de agrupación
     DISTANCIAS: {
-        AGRUPACION_ARTEFACTOS: 40,  // mm (antes 80 píxeles)
-        MAX_DERIVACION: 75,         // mm (antes 150 píxeles)
-        MIN_SEPARACION_CAMARAS: 15  // mm (antes 30 píxeles)
+        AGRUPACION_ARTEFACTOS: 80,
+        MAX_DERIVACION: 150,
+        MIN_SEPARACION_CAMARAS: 30
     }
 };
 
@@ -192,7 +192,7 @@ function conectarDerivacionesSecundarias(derivaciones, colectoresPrincipales, ca
             // PRIORIDAD 1: Conectar a colector principal más cercano (WC ⌀110mm)
             if (colectoresPrincipales.length > 0) {
                 destino = encontrarElementoMasCercano(derivacion, colectoresPrincipales);
-                const distancia = calcularDistanciaMillimetros(derivacion, destino);
+                const distancia = calcularDistancia(derivacion, destino);
                 
                 if (distancia <= RIDAA_CONFIG.DISTANCIAS.MAX_DERIVACION) {
                     console.log(`│  ├─ ${derivacion.type} (⌀${derivacion.tuberia_diametro}mm) → WC principal`);
@@ -278,8 +278,8 @@ function generarTrazadoProfesional(camarasDomiciliarias, colectorPublico) {
     
     // PASO 1: Identificar cámara final (más cercana al colector público)
     const camaraFinal = camarasDomiciliarias.reduce((masCercana, camara) => {
-        const distanciaActual = calcularDistanciaMillimetros(camara, colectorPublico);
-        const distanciaMasCercana = calcularDistanciaMillimetros(masCercana, colectorPublico);
+        const distanciaActual = calcularDistancia(camara, colectorPublico);
+        const distanciaMasCercana = calcularDistancia(masCercana, colectorPublico);
         return distanciaActual < distanciaMasCercana ? camara : masCercana;
     });
     
@@ -295,7 +295,7 @@ function generarTrazadoProfesional(camarasDomiciliarias, colectorPublico) {
             desde: camaraFinal,
             hacia: colectorPublico,
             tipo: 'final-a-publico',
-            distancia: calcularDistanciaMillimetros(camaraFinal, colectorPublico)
+            distancia: calcularDistancia(camaraFinal, colectorPublico)
         });
     } else {
         // Múltiples cámaras: aplicar algoritmo Prim modificado
@@ -316,7 +316,7 @@ function generarTrazadoProfesional(camarasDomiciliarias, colectorPublico) {
             desde: camaraFinal,
             hacia: colectorPublico,
             tipo: 'final-a-publico',
-            distancia: calcularDistanciaMillimetros(camaraFinal, colectorPublico)
+            distancia: calcularDistancia(camaraFinal, colectorPublico)
         });
     }
     
@@ -349,7 +349,7 @@ function algoritmoMSTOptimizado(camarasRestantes, camaraFinal) {
                 const camaraVisitada = [...camarasRestantes, camaraFinal].find(c => c.id === camaraId);
                 if (!camaraVisitada) continue;
                 
-                const distancia = calcularDistanciaMillimetros(camaraNoVisitada, camaraVisitada);
+                const distancia = calcularDistancia(camaraNoVisitada, camaraVisitada);
                 
                 // Aplicar factor de optimización profesional
                 const distanciaOptimizada = aplicarFactorOptimizacion(camaraNoVisitada, camaraVisitada, distancia);
@@ -405,7 +405,7 @@ function aplicarFactorOptimizacion(camara1, camara2, distanciaReal) {
 }
 
 // ================================
-// FUNCIONES AUXILIARES INTELIGENTES - CORREGIDAS A MILÍMETROS
+// FUNCIONES AUXILIARES INTELIGENTES
 // ================================
 
 function agruparDerivacionesPorProximidad(derivaciones, distanciaMaxima) {
@@ -422,7 +422,7 @@ function agruparDerivacionesPorProximidad(derivaciones, distanciaMaxima) {
         derivaciones.forEach(otra => {
             if (procesados.has(otra.id)) return;
             
-            const distancia = calcularDistanciaMillimetros(derivacion, otra);
+            const distancia = calcularDistancia(derivacion, otra);
             if (distancia <= distanciaMaxima) {
                 grupo.push(otra);
                 procesados.add(otra.id);
@@ -439,17 +439,17 @@ function encontrarCamaraMasCercana(elemento, camaras) {
     if (camaras.length === 0) return null;
     
     let camaraMasCercana = camaras[0];
-    let distanciaMinima = calcularDistanciaMillimetros(elemento, camaraMasCercana);
+    let distanciaMinima = calcularDistancia(elemento, camaraMasCercana);
     
     for (let i = 1; i < camaras.length; i++) {
-        const distancia = calcularDistanciaMillimetros(elemento, camaras[i]);
+        const distancia = calcularDistancia(elemento, camaras[i]);
         if (distancia < distanciaMinima) {
             distanciaMinima = distancia;
             camaraMasCercana = camaras[i];
         }
     }
     
-    console.log(`  🎯 Elemento en (${Math.round(elemento.x)},${Math.round(elemento.y)})mm → Cámara más cercana: ${camaraMasCercana.numeroCamera || camaraMasCercana.id} a ${Math.round(distanciaMinima)}mm`);
+    console.log(`  🎯 Elemento en (${Math.round(elemento.x)},${Math.round(elemento.y)}) → Cámara más cercana: ${camaraMasCercana.numeroCamera || camaraMasCercana.id} a ${Math.round(distanciaMinima)} unidades`);
     
     return camaraMasCercana;
 }
@@ -458,10 +458,10 @@ function encontrarElementoMasCercano(elemento, elementos) {
     if (elementos.length === 0) return null;
     
     let elementoMasCercano = elementos[0];
-    let distanciaMinima = calcularDistanciaMillimetros(elemento, elementoMasCercano);
+    let distanciaMinima = calcularDistancia(elemento, elementoMasCercano);
     
     for (let i = 1; i < elementos.length; i++) {
-        const distancia = calcularDistanciaMillimetros(elemento, elementos[i]);
+        const distancia = calcularDistancia(elemento, elementos[i]);
         if (distancia < distanciaMinima) {
             distanciaMinima = distancia;
             elementoMasCercano = elementos[i];
@@ -469,13 +469,6 @@ function encontrarElementoMasCercano(elemento, elementos) {
     }
     
     return elementoMasCercano;
-}
-
-// CORREGIDO: Función de distancia específica para milímetros
-function calcularDistanciaMillimetros(elemento1, elemento2) {
-    return Math.sqrt(
-        Math.pow(elemento2.x - elemento1.x, 2) + Math.pow(elemento2.y - elemento1.y, 2)
-    );
 }
 
 function crearConexionJerarquica(desde, hacia, tipoConexion, currentPlan) {
@@ -492,8 +485,8 @@ function crearConexionJerarquica(desde, hacia, tipoConexion, currentPlan) {
     };
     
     const icono = tiposConexion[tipoConexion] || '🔗';
-    const distancia = calcularDistanciaMillimetros(desde, hacia);
-    console.log(`  ${icono} ${desde.type || desde.id} → ${hacia.type || hacia.id} (${Math.round(distancia)}mm)`);
+    const distancia = calcularDistancia(desde, hacia);
+    console.log(`  ${icono} ${desde.type || desde.id} → ${hacia.type || hacia.id} (${Math.round(distancia)} unidades)`);
     
     // Usar la función existente del sistema principal
     if (typeof createTracingConnection === 'function') {
