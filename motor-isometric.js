@@ -5,7 +5,6 @@
  * - Integración al plano principal
  * - Calidad de impresión preservada
  * - Fuentes responsivas
- * CORREGIDO: Sistema en milímetros
  */
 
 class IsometricSewerGenerator {
@@ -280,7 +279,7 @@ class IsometricSewerGenerator {
     }
 
     /**
-     * FUNCIÓN PRINCIPAL: Convertir trazado 2D a isométrico 3D - OPTIMIZADA PARA MILÍMETROS
+     * FUNCIÓN PRINCIPAL: Convertir trazado 2D a isométrico 3D - OPTIMIZADA
      */
     convertTracingToIsometric(tracingElements, tracingConnections) {
         console.log('🎯 Convirtiendo trazado a isométrico PROFESIONAL...');
@@ -288,7 +287,7 @@ class IsometricSewerGenerator {
         console.log(`└─ Conexiones: ${tracingConnections.length}`);
 
         const fixtures = tracingElements.map(element => {
-            console.log(`  📍 Elemento ${element.type} en: (${element.x}mm, ${element.y}mm)`);
+            console.log(`  📍 Elemento ${element.type} en: (${element.x}, ${element.y})`);
             return {
                 x: element.x,
                 y: 0,
@@ -303,7 +302,7 @@ class IsometricSewerGenerator {
             const fromElement = tracingElements.find(el => el.id === connection.from.id);
             const toElement = tracingElements.find(el => el.id === connection.to.id);
             
-            console.log(`  🔗 Tubería ${index + 1}: (${fromElement.x}mm,${fromElement.y}mm) → (${toElement.x}mm,${toElement.y}mm)`);
+            console.log(`  🔗 Tubería ${index + 1}: (${fromElement.x},${fromElement.y}) → (${toElement.x},${toElement.y})`);
             
             return {
                 x1: fromElement.x,
@@ -372,7 +371,7 @@ class IsometricSewerGenerator {
     }
 
     /**
-     * Genera SVG isométrico completo desde datos del trazado - VERSIÓN MEJORADA PARA MILÍMETROS
+     * Genera SVG isométrico completo desde datos del trazado - VERSIÓN MEJORADA
      */
     generateIsometricFromTracing(tracingElements, tracingConnections, title = "ISOMÉTRICO DE TRAZADO", scale = "SIN ESCALA") {
         
@@ -385,16 +384,16 @@ class IsometricSewerGenerator {
     }
 
     /**
-     * Motor base de generación isométrica - VERSIÓN MEJORADA PARA MILÍMETROS
+     * Motor base de generación isométrica - VERSIÓN MEJORADA
      */
     generateIsometricSVG(pipes = [], fixtures = [], title = "ISOMÉTRICO A.SERVIDAS", scale = "SIN ESCALA") {
         if (pipes.length === 0 && fixtures.length === 0) {
             throw new Error('Se requiere al menos una tubería o artefacto');
         }
 
-        // CORREGIDO: Calcular límites del dibujo - ESCALA OPTIMIZADA PARA MILÍMETROS
+        // Calcular límites del dibujo - ESCALA OPTIMIZADA
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-        const scaleValue = 0.3; // CORREGIDO: Escala reducida para coordenadas en mm
+        const scaleValue = 1.5; // Escala base optimizada
         
         // Procesar tuberías
         pipes.forEach(pipe => {
