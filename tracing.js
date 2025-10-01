@@ -450,14 +450,17 @@ function selectTracingElement(elementGroup, keepMultipleSelection = false) {
         circle.style.filter = 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.8))';
     }
     
-    // Actualizar selección en el plan (para compatibilidad)
+    // Actualizar selección en el plan
     currentPlan.selectedElement = elementId;
+    
+    // 🆕 AGREGAR SISTEMA DE ARRASTRE MEJORADO
+    setupElementDragImproved(elementGroup);
     
     const count = selectedElements.size;
     if (count === 1) {
-        showStatus('✅ Elemento seleccionado. Presiona SUPRIMIR para eliminar');
+        showStatus('✅ Elemento seleccionado. Presiona SUPRIMIR para eliminar o arrastra para mover');
     } else {
-        showStatus(`✅ ${count} elementos seleccionados. Presiona SUPRIMIR para eliminar todos`);
+        showStatus(`✅ ${count} elementos seleccionados. Presiona SUPRIMIR para eliminar`);
     }
 }
 
@@ -1346,32 +1349,196 @@ function deleteSelectedElements() {
     showStatus(`🗑️ ${deletedCount} elemento(s) eliminado(s) correctamente`);
 }
 
-// 🆕 NUEVA FUNCIÓN: Seleccionar todos los elementos
-function selectAllElements() {
-    const currentPlan = plans[currentPlanIndex];
-    
-    if (currentPlan.tracingElements.length === 0) {
-        showStatus('⚠️ No hay elementos para seleccionar');
-        return;
-    }
-    
-    clearSelection();
-    
-    currentPlan.tracingElements.forEach(element => {
-        const elementGroup = document.querySelector(`#tracing-element-${element.id}`);
-        if (elementGroup) {
-            selectTracingElement(elementGroup, true);
-        }
-    });
-    
-    showStatus(`✅ Todos los elementos seleccionados (${selectedElements.size})`);
-}
-
 // 🔧 FUNCIÓN EXPANDIDA: deselectAllElements con alias
 function deselectAllElements() {
     clearSelection();
     showStatus('🔄 Elementos deseleccionados');
 }
+
+// 🆕 SISTEMA DE ARRASTRE MEJORADO - Solo se activa al mover
+function setupElementDragImproved(elementGroup) {
+    let isDragging = false;
+    let hasMoved = false;
+    let startMouse = { x: 0, y: 0 };
+    let startElement = { x: 0, y: 0 };
+    const MOVE_THRESHOLD = 5; // Píxeles mínimos para considerar movimiento
+    
+    const circle = elementGroup.querySelector('circle');
+    if (!circle) return;
+    
+    function handleMouseDown(e) {
+        if (isNavigationMode) return;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        
+        isDragging = true;
+        hasMoved = false;
+        
+        const coords = screenToSVGCoords(e.clientX, e.clientY);
+        startMouse.x = coords.x;
+        startMouse.y = coords.y;
+        
+        startElement.x = parseFloat(circle.getAttribute('cx'));
+        startElement.y = parseFloat(circle.getAttribute('cy'));
+        
+        document.body.style.userSelect = 'none';
+    }
+    
+    function handleMouseMove(e) {
+        if (!isDragging) return;
+        
+        const coords = screenToSVGCoords(e.clientX, e.clientY);
+        const deltaX = coords.x - startMouse.x;
+        const deltaY = coords.y - startMouse.y;
+        
+        // Solo activar arrastre si se movió más del umbral
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        
+        if (distance > MOVE_THRESHOLD) {
+            hasMoved = true;
+            elementGroup.style.opacity = '0.7';
+            
+            const newX = startElement.x + deltaX;
+            const newY = startElement.y + deltaY;
+            
+            circle.setAttribute('cx', newX);
+            circle.setAttribute('cy', newY);
+            
+            // Actualizar texto del elemento
+            const text = elementGroup.querySelector('text');
+            if (text) {
+                text.setAttribute('x', newX);
+                text.setAttribute('y', newY + 3);
+            }
+            
+            // Actualizar etiqueta si existe
+            const labelText = elementGroup.querySelectorAll('text')[1];
+            if (labelText) {
+                labelText.setAttribute('x', newX);
+                labelText.setAttribute('y', newY - 20);
+            }
+            
+            // Actualizar conexiones
+            updateConnectionsForElement(elementGroup);
+        }
+    }
+    
+    function handleMouseUp(e) {
+        if (!isDragging) return;
+        
+        isDragging = false;
+        document.body.style.userSelect = '';
+        elementGroup.style.opacity = '1';
+        
+        if (hasMoved) {
+            // Actualizar datos del elemento
+            const elementId = parseInt(elementGroup.id.replace('tracing-element-', ''));
+            const currentPlan = plans[currentPlanIndex];
+            const element = currentPlan.tracingElements.find(el => el.id === elementId);
+            
+            if (element) {
+                element.x = parseFloat(circle.getAttribute('cx'));
+                element.y = parseFloat(circle.getAttribute('cy'));
+            }
+            
+            showStatus('📍 Elemento reposicionado');
+        }
+        
+        hasMoved = false;
+    }
+    
+    // Remover listeners anteriores si existen
+    elementGroup.removeEventListener('mousedown', handleMouseDown);
+    
+    // Agregar nuevos listeners
+    elementGroup.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    
+    // Limpiar al remover elemento
+    elementGroup.addEventListener('remove', function() {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+    });
+}
+
+// 🆕 FUNCIÓN AUXILIAR: Actualizar conexiones cuando se mueve un elemento
+function updateConnectionsForElement(elementGroup) {
+    const elementId = parseInt(elementGroup.id.replace('tracing-element-', ''));
+    const circle = elementGroup.querySelector('circle');
+    const newX = parseFloat(circle.getAttribute('cx'));
+    const newY = parseFloat(circle.getAttribute('cy'));
+    
+    const tracingSvg = document.getElementById('tracingSvg');
+    
+    // Actualizar líneas conectadas
+    const linesFrom = tracingSvg.querySelectorAll(`[data-from="${elementId}"]`);
+    const linesTo = tracingSvg.querySelectorAll(`[data-to="${elementId}"]`);
+    
+    linesFrom.forEach(line => {
+        line.setAttribute('x1', newX);
+        line.setAttribute('y1', newY);
+        updateArrowForLine(line);
+        updateLabelForLine(line);
+    });
+    
+    linesTo.forEach(line => {
+        line.setAttribute('x2', newX);
+        line.setAttribute('y2', newY);
+        updateArrowForLine(line);
+        updateLabelForLine(line);
+    });
+}
+
+// 🆕 FUNCIÓN AUXILIAR: Actualizar flecha
+function updateArrowForLine(line) {
+    const fromId = line.getAttribute('data-from');
+    const toId = line.getAttribute('data-to');
+    const connectionId = `${fromId}-${toId}`;
+    
+    const arrow = document.querySelector(`[data-connection="${connectionId}"].flow-arrow`);
+    if (!arrow) return;
+    
+    const x1 = parseFloat(line.getAttribute('x1'));
+    const y1 = parseFloat(line.getAttribute('y1'));
+    const x2 = parseFloat(line.getAttribute('x2'));
+    const y2 = parseFloat(line.getAttribute('y2'));
+    
+    const arrowX = x1 + (x2 - x1) * 0.75;
+    const arrowY = y1 + (y2 - y1) * 0.75;
+    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+    
+    arrow.setAttribute('transform', `translate(${arrowX}, ${arrowY}) rotate(${angle})`);
+}
+
+// 🆕 FUNCIÓN AUXILIAR: Actualizar etiqueta
+function updateLabelForLine(line) {
+    const fromId = line.getAttribute('data-from');
+    const toId = line.getAttribute('data-to');
+    const connectionId = `${fromId}-${toId}`;
+    
+    const labelGroup = document.querySelector(`.pipe-label-group[data-connection="${connectionId}"]`);
+    if (!labelGroup) return;
+    
+    const guideLine = labelGroup.querySelector('.guide-line');
+    if (!guideLine) return;
+    
+    const x1 = parseFloat(line.getAttribute('x1'));
+    const y1 = parseFloat(line.getAttribute('y1'));
+    const x2 = parseFloat(line.getAttribute('x2'));
+    const y2 = parseFloat(line.getAttribute('y2'));
+    
+    const midX = (x1 + x2) / 2;
+    const midY = (y1 + y2) / 2;
+    
+    guideLine.setAttribute('x1', midX);
+    guideLine.setAttribute('y1', midY);
+}
+
+// ================================
+// FUNCIONES PARA TEXTO Y ROSA DE VIENTOS
+// ================================
 
 // ================================
 // FUNCIONES PARA TEXTO Y ROSA DE VIENTOS
