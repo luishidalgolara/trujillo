@@ -1611,3 +1611,76 @@ function sendEmail() {
     hideEmailModal();
     showStatus('✅ Cliente de email abierto');
 }
+// ================================
+// SISTEMA DE AUTO-OCULTACIÓN DEL PANEL
+// ================================
+
+let panelHideTimer = null;
+const PANEL_HIDE_DELAY = 200; // 0.2 segundos
+
+function initPanelAutoHide() {
+    const panel = document.querySelector('.tracing-panel');
+    const toolbar = document.querySelector('.toolbar');
+    
+    if (!panel || !toolbar) return;
+    
+    // Mostrar panel al pasar mouse por toolbar o panel
+    toolbar.addEventListener('mouseenter', () => {
+        showPanel();
+        clearTimeout(panelHideTimer);
+    });
+    
+    panel.addEventListener('mouseenter', () => {
+        showPanel();
+        clearTimeout(panelHideTimer);
+    });
+    
+    // Ocultar panel cuando mouse sale
+    panel.addEventListener('mouseleave', () => {
+        startHideTimer();
+    });
+    
+    // Iniciar timer después de 3 segundos
+    setTimeout(() => {
+        startHideTimer();
+    }, 3000);
+}
+
+function showPanel() {
+    const panel = document.querySelector('.tracing-panel');
+    const workspace = document.querySelector('.workspace-container');
+    if (panel) {
+        panel.classList.remove('hidden');
+    }
+    if (workspace) {
+        workspace.classList.remove('panel-hidden');  /* AGREGAR */
+    }
+}
+
+function hidePanel() {
+    const panel = document.querySelector('.tracing-panel');
+    const workspace = document.querySelector('.workspace-container');
+    if (panel) {
+        panel.classList.add('hidden');
+    }
+    if (workspace) {
+        workspace.classList.add('panel-hidden');  /* AGREGAR */
+    }
+}
+
+function startHideTimer() {
+    clearTimeout(panelHideTimer);
+    panelHideTimer = setTimeout(() => {
+        hidePanel();
+    }, PANEL_HIDE_DELAY);
+}
+
+// Inicializar cuando carga el DOM
+document.addEventListener('DOMContentLoaded', function() {
+    // ... tu código existente ...
+    
+    // Agregar al final:
+    setTimeout(() => {
+        initPanelAutoHide();
+    }, 1000);
+});
